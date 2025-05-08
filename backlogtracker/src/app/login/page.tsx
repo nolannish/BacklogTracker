@@ -1,8 +1,30 @@
 'use client';
 
 import Header from "@/components/Header";
+import LoginUser from "./login";
+import { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    try{
+      const results = await LoginUser(formData);
+      if((!results.success)){
+        alert(results.error);
+        return;
+      }
+      alert("Logged in successfully");
+      router.push("/");
+    } catch (error) {
+      console.error("Login Error: ", error);
+      alert("Failed to log in. Please check your credentials and try again.");
+    }
+  }
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900">
       <Header />
@@ -11,7 +33,7 @@ export default function Login() {
       <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
         <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm relative">
           <h2 className="text-2xl font-bold mb-4 text-center">Log In</h2>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
@@ -19,6 +41,7 @@ export default function Login() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="you@example.com"
                 required
@@ -32,6 +55,7 @@ export default function Login() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="••••••••"
                 required
