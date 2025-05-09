@@ -15,6 +15,31 @@ export default function Register() {
     const password = formData.get('password') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
 
+    if(!formData.get("firstName")){
+      alert("First Name is required");
+      return;
+    }
+
+    if(!formData.get("lastName")){
+      alert("Last name is required");
+      return;
+    }
+
+    if(!formData.get("email")){
+      alert("Email is required");
+      return;
+    }
+
+    if(!formData.get("password")){
+      alert("Password is required");
+      return;
+    }
+
+    if(!formData.get("confirmPassword")){
+      alert("Confirm Password is required");
+      return;
+    }
+    
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
