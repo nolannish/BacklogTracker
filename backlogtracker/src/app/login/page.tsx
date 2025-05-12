@@ -1,7 +1,7 @@
 'use client';
 
 import Header from "@/components/Header";
-import LoginUser from "./login";
+import LoginUser from "../api/login";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
@@ -18,6 +18,7 @@ export default function Login() {
         alert(results.error);
         return;
       }
+      
       alert("Logged in successfully");
       router.push("/");
     } catch (error) {

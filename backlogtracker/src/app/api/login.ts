@@ -2,6 +2,10 @@
 
 import sql from "../lib/data";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { cookies } from 'next/headers';
+
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export default async function LoginUser(formData: FormData){
     const email = formData.get('email') as string;
@@ -24,6 +28,21 @@ export default async function LoginUser(formData: FormData){
             if(!isPasswordValid){
                 return { success: false, error: "Invalid password" };
             }
+            const token = jwt.sign(
+                { id: user.id, email: user.email },
+                JWT_SECRET,
+                { expiresIn: '168h' } // 7 days
+            );
+
+            (await cookies()).set({
+                name: 'auth_token',
+                value: token,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                path: '/',
+                maxAge: 60 * 60 * 24 * 7 // 7 days
+            })
             return { success: true };
         } else {
             return { success: false, error: "Invalid email or password" };

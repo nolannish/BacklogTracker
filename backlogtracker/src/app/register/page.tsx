@@ -1,7 +1,7 @@
 'use client';
 
 import Header from "@/components/Header";
-import registerUser from "./register";
+import registerUser from "../api/register";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
