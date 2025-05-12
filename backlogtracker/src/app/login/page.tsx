@@ -20,7 +20,7 @@ export default function Login() {
       }
       
       alert("Logged in successfully");
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       console.error("Login Error: ", error);
       alert("Failed to log in. Please check your credentials and try again.");
