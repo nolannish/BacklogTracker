@@ -27,6 +27,7 @@ export async function GET(req: Request) {
     // Return the decoded user data (you can adjust what data you send back)
     return NextResponse.json({ email: decoded.email });
   } catch (error) {
+    // returns 401 is not logged in/unauthenticated, ensuring proper navbar/header is rendered
     console.error('Error verifying JWT:', error)
     return new NextResponse('Unauthorized', { status: 401 });
   }
