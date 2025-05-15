@@ -1,6 +1,27 @@
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import jwt from 'jsonwebtoken';
 import Header from "@/components/Header";
 
-export default function Library() {
+export default async function Library() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  if(!token) {
+    // redirect to unauthorized page if not logged in/authenticated
+    redirect('/unauthorized');
+  }
+
+  const secret = process.env.JWT_SECRET!;
+
+  try{
+    jwt.verify(token, secret);
+  } catch (error) {
+    // redirect to unauthorized page if token in invalid
+    console.error('Unauthorized user: ', error);
+    redirect('/unauthorized');
+  }
+  
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900">
       <Header />

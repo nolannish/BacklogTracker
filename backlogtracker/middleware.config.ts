@@ -1,4 +1,4 @@
 // middleware.config.ts
 export const config = {
-  matcher: ['/dashboard'],
+  matcher: ['/dashboard', '/library', '/settings'],
 };

@@ -22,8 +22,8 @@ export default function Dashboard() {
         const data = await res.json()
         setUser(data)
       } else {
-        // If the user is not authenticated, redirect to login
-        router.push('/login')
+        // If the user is not authenticated, redirect to unauthorized page
+        router.push('/unauthorized')
       }
     }
 
