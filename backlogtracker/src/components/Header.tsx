@@ -1,23 +1,10 @@
-'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import headerAuthentication from '@/app/lib/auth/headerAuthentication';
 
-export default function Header() {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-	useEffect(() => {
-		async function fetchUser() {
-			const response = await fetch('/api/user');
-			if (response.ok) {
-				const user = await response.json();
-				setIsLoggedIn(user);
-			} else {
-				setIsLoggedIn(false);
-			}
-		}
-		fetchUser();
-	}, []);
+export default async function Header() {
+	const isLoggedIn = await headerAuthentication();
 
 	return (
 		<header className="bg-white shadow-md w-full">
@@ -38,15 +25,9 @@ export default function Header() {
 							<Link href="/settings" className="text-gray-600 hover:text-blue-600 font-medium">
 								Settings
 							</Link>
-							<button
-								onClick={async () => {
-									await fetch('/api/logout', { method: 'POST' });
-									window.location.href = '/';
-								}}
-								className="text-red-600 hover:text-red-800 font-medium"
-							>
+							<Link href="/logout" className="text-red-600 hove:text-red-800 font-medium">
 								Logout
-							</button>
+							</Link>
 						</>
 					) : (
 						<>

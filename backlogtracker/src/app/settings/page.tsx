@@ -1,6 +1,8 @@
 import Header from '@/components/Header';
+import authenticateUser from '../api/auth/authentication';
 
-export default function Settings(){
+export default async function Settings(){
+  await authenticateUser();
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900">
       <Header />
