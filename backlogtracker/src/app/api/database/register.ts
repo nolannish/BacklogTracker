@@ -1,6 +1,6 @@
 'use server';
 
-import sql from "../lib/data";
+import sql from "../../lib/data";
 import bcrypt from "bcrypt";
 
 export default async function registerUser(formData: FormData) {

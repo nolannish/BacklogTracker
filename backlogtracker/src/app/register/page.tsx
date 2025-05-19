@@ -1,6 +1,6 @@
 'use client';
 
-import registerUser from "../api/register";
+import registerUser from "../api/database/register";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import LoginButton from "@/components/LoginButton";

@@ -1,10 +1,14 @@
 import LoginButton from "@/components/LoginButton";
 import RegisterButton from "@/components/RegisterButton";
+import HomeButton from "@/components/HomeButton";
 
 export default function Unauthorized() {
 	return (
 		<main className="min-h-screen bg-black text-gray-100 flex items-center justify-center">
 			<div className="flex flex-col items-center text-center mt-12 space-y-6">
+				<div className="absolute top-4 left-4">
+					<HomeButton />
+				</div>
 				<h1 className="text-4xl font-bold text-center mt-8">
 					401: Unauthorized
 				</h1>

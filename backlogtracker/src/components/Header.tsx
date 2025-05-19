@@ -8,12 +8,12 @@ export default async function Header() {
 
 	return (
 		<header className="bg-white shadow-md w-full">
-			<div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+			<div className="w-full px-8 py-4 flex items-center justify-between">
 				<div className="flex items-center space-x-2">
 					<span className="text-3xl">🎮</span>
 					<h1 className="text-2xl font-bold text-gray-800">Backlog Tracker</h1>
 				</div>
-				<nav className="space-x-4">
+				<nav className="flex flex-wrap gap-x-4 sm:gap-x-6 md:gap-x-8">
 					{isLoggedIn ? (
 						<>
 							<Link href="/dashboard" className="text-gray-600 hover:text-blue-600 font-medium">
