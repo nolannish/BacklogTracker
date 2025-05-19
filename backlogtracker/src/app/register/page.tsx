@@ -1,9 +1,10 @@
 'use client';
 
-import Header from "@/components/Header";
 import registerUser from "../api/register";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import LoginButton from "@/components/LoginButton";
+import HomeButton from "@/components/HomeButton";
 
 export default function Register() {
   const router = useRouter();
@@ -57,10 +58,11 @@ export default function Register() {
 
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900">
-      <Header />
-
       {/* Register Modal */}
       <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="absolute top-4 left-4">
+          <HomeButton />
+        </div>
         <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm relative">
           <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -133,6 +135,12 @@ export default function Register() {
               </button>
             </div>
           </form>
+          <h2 className="text-sm text-gray-500 font-bold mt-4 text-center">
+            Already have an account?
+          </h2>
+          <div className="mt-2 flex justify-center">
+            <LoginButton />
+          </div>
         </div>
       </div>
     </main>

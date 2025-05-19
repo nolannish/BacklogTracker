@@ -1,9 +1,10 @@
 'use client';
 
-import Header from "@/components/Header";
 import LoginUser from "../api/login";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import RegisterButton from "@/components/RegisterButton";
+import HomeButton from "@/components/HomeButton";
 
 export default function Login() {
   const router = useRouter();
@@ -28,10 +29,11 @@ export default function Login() {
   }
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900">
-      <Header />
-
       {/* Login Modal */}
       <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="absolute top-4 left-4">
+          <HomeButton />
+        </div>
         <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm relative">
           <h2 className="text-2xl font-bold mb-4 text-center">Log In</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -70,6 +72,12 @@ export default function Login() {
               Log In
             </button>
           </form>
+          <h2 className="text-sm text-gray-500 font-bold mt-4 text-center">
+            Don't have an account?
+          </h2>
+          <div className="mt-2 flex justify-center">
+            <RegisterButton />
+          </div>
         </div>
       </div>
     </main>
