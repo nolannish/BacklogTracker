@@ -22,7 +22,7 @@ export default function SettingsSidebar({ selected, onSelect }: SidebarProps) {
         }`}
         onClick={() => onSelect('privacy')}
       >
-        Notifications
+        Privacy
       </button>
     </nav>
   );
