@@ -6,9 +6,17 @@ import { UpdateFirstnameFrontend } from '@/app/lib/updateFirstnameFrontend';
 import { UpdateLastnameFrontend } from '@/app/lib/updateLastnameFrontend';
 import { UpdateEmailFrontend } from '@/app/lib/updateEmailFrontend';
 
+type UserData = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+}
+
 export default function AccountSettings() {
   const [user, setUser] = useState<{ email: string, userId: string } | null>(null);
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -39,13 +47,20 @@ export default function AccountSettings() {
   useEffect(() => {
     async function getUserData(){
       if (user) {
-        console.log('user: ', user);
+        // console.log('user: ', user);
         const response = await FetchUserData(user.userId);
-        console.log("response: ", response);
+        // console.log("response: ", response);
         if(response){
           // console.log("pass");
           // const data = await response.json();
-          setUserData(response);
+          const mappedUserData: UserData = {
+            id: response.id,
+            first_name: response.first_name,
+            last_name: response.last_name,
+            email: response.email,
+            password: response.password
+          };
+          setUserData(mappedUserData);
         } else {
           console.error("failed to fetch user data");
         }
@@ -86,6 +101,8 @@ export default function AccountSettings() {
   }, [emailSuccessMessage])
 
   const handleUpdateFirstname = async () => {
+    if (!userData) return;
+
     setLoadingFirstName(true);
     const results = await UpdateFirstnameFrontend(userData.id, firstName);
     setFirstNameSuccessMessage(results.message);
@@ -93,6 +110,8 @@ export default function AccountSettings() {
   }
 
   const handleUpdateLastname = async () => {
+    if (!userData) return;
+
     setLoadingLastName(true);
     const results = await UpdateLastnameFrontend(userData.id, lastName);
     setLastNameSuccessMessage(results.message);
@@ -100,6 +119,8 @@ export default function AccountSettings() {
   }
 
   const handleUpdateEmail = async () => {
+    if (!userData) return;
+
     setLoadingEmail(true);
     const results = await UpdateEmailFrontend(userData.id, email);
     setEmailSuccessMessage(results.message);
