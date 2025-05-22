@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { UpdatePasswordFrontend } from "@/app/lib/updatePasswordFrontned";
+import { DeleteAccountFrontend } from "@/app/lib/deleteAccountFrontend";
+import { useRouter } from 'next/navigation';
 
 type UserData = {
   id: string,
@@ -12,11 +14,15 @@ type UserData = {
 }
 
 export default function PrivacySettings({ userData }: {userData: UserData | null}) {
+  const router = useRouter();
+
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [loadingPassword, setLoadingPassword] = useState(false);
   const [newPasswordSuccessMessage, setNewPasswordSuccessMessage] = useState('');
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [deleteSuccessMessage, setDeleteSuccessMessage] = useState('');
 
   useEffect(() => {
     if (newPasswordSuccessMessage) {
@@ -26,7 +32,17 @@ export default function PrivacySettings({ userData }: {userData: UserData | null
 
       return () => clearTimeout(timeout);
     }
-  })
+  }, [newPasswordSuccessMessage]);
+
+  useEffect(() => {
+    if (deleteSuccessMessage) {
+      const timeout = setTimeout(() => {
+        setDeleteSuccessMessage('');
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [deleteSuccessMessage]);
 
   const handleUpdatePassword = async () => {
     if(!oldPassword || !newPassword || !userData) return;
@@ -41,10 +57,21 @@ export default function PrivacySettings({ userData }: {userData: UserData | null
     setNewPasswordSuccessMessage(results.message);
     setLoadingPassword(false);
   }
+
+  const handleDelete = async () => {
+    if(!userData) return;
+
+    setLoadingDelete(true);
+    const results = await DeleteAccountFrontend(userData.id);
+    alert(results.message);
+    setLoadingDelete(false);
+    router.push('/');
+  }
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Privacy Settings</h2>
       <div className="space-y-4">
+        <h3 className="text-xl ">Change your password</h3>
         <div>
           <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-700">
             Old Password
@@ -91,6 +118,15 @@ export default function PrivacySettings({ userData }: {userData: UserData | null
           </button>
           {newPasswordSuccessMessage && <p className="text-sm text-green-600">{newPasswordSuccessMessage}</p>}
         </div>
+      </div>
+      <div className="space-y-4">
+        <h3 className="text-xl">Delete your account</h3>
+        <button
+          onClick={handleDelete}
+          className="mb-6 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-800 disabled:opacity-50"
+        >
+          Delete your account
+        </button>
       </div>
     </div>
   )
