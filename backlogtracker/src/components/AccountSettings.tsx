@@ -14,9 +14,9 @@ type UserData = {
   password: string;
 }
 
-export default function AccountSettings() {
+export default function AccountSettings({ userData }: { userData: UserData | null}) {
   const [user, setUser] = useState<{ email: string, userId: string } | null>(null);
-  const [userData, setUserData] = useState<UserData | null>(null);
+  // const [userData, setUserData] = useState<UserData | null>(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,49 +26,6 @@ export default function AccountSettings() {
   const [firstNameSuccessMessage, setFirstNameSuccessMessage] = useState('');
   const [lastNameSuccessMessage, setLastNameSuccessMessage] = useState('');
   const [emailSuccessMessage, setEmailSuccessMessage] = useState('');
-
-  useEffect(() => {
-    async function fetchUserJWT() {
-      const response = await fetch('/api/auth/getjwt', {
-        method: 'GET',
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data);
-      } else {
-        console.error('Failed to fetch jwt');
-      }
-    }
-
-    fetchUserJWT();
-  }, []);
-
-  useEffect(() => {
-    async function getUserData(){
-      if (user) {
-        // console.log('user: ', user);
-        const response = await FetchUserData(user.userId);
-        // console.log("response: ", response);
-        if(response){
-          // console.log("pass");
-          // const data = await response.json();
-          const mappedUserData: UserData = {
-            id: response.id,
-            first_name: response.first_name,
-            last_name: response.last_name,
-            email: response.email,
-            password: response.password
-          };
-          setUserData(mappedUserData);
-        } else {
-          console.error("failed to fetch user data");
-        }
-      }
-    }
-
-    getUserData();
-  }, [user])
 
   useEffect(() => {
     if (firstNameSuccessMessage) {
