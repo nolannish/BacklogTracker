@@ -66,7 +66,7 @@ export default function SettingsContent() {
 
       <div className="flex-1 p-6">
         {selectedSection === 'account' && <AccountSettings userData={userData}/>}
-        {selectedSection === 'privacy' && <PrivacySettings />}
+        {selectedSection === 'privacy' && <PrivacySettings userData={userData}/>}
       </div>
     </>
   )

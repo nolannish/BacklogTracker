@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import FetchUserData from '@/app/api/database/fetchUserData';
 import { UpdateFirstnameFrontend } from '@/app/lib/updateFirstnameFrontend';
 import { UpdateLastnameFrontend } from '@/app/lib/updateLastnameFrontend';
 import { UpdateEmailFrontend } from '@/app/lib/updateEmailFrontend';
