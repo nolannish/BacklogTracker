@@ -5,22 +5,46 @@ import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import RegisterButton from "@/components/RegisterButton";
 import HomeButton from "@/components/HomeButton";
+import { useState } from "react";
 
 export default function Login() {
   const router = useRouter();
+
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [formError, setFormError] = useState('');
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    setEmailError('');
+    setPasswordError('');
+    setFormError('');
+
+    let hasError = false;
+
+    if(!email || !/\S+@\S+\.\S+/.test(email)) { 
+      setEmailError('Please enter a valid email address.');
+      hasError = true;
+    }
+
+    if(!password){
+      setPasswordError('Please enter your password');
+    }
+
+    if (hasError) return;
 
     try{
       const results = await LoginUser(formData);
       if((!results.success)){
-        alert(results.error);
+        setFormError(results.error || "Invalid email or password");
         return;
       }
       
-      alert("Logged in successfully");
       router.push("/dashboard");
     } catch (error) {
       console.error("Login Error: ", error);
@@ -49,6 +73,7 @@ export default function Login() {
                 placeholder="you@example.com"
                 required
               />
+              {emailError && <p className="text-sm text-red-500 mt-1">{emailError}</p>}
             </div>
 
             <div>
@@ -63,8 +88,10 @@ export default function Login() {
                 placeholder="••••••••"
                 required
               />
+              {passwordError && <p className="text-sm text-red-500 mt-1">{passwordError}</p>}
             </div>
 
+            {formError && <p className="text-center text-red-500 text-sm mt-4">{formError}</p>}
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 active:scale-95 transition"
