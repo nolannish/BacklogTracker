@@ -5,8 +5,7 @@ import {
   UpdatePasswordFrontend,
   DeleteAccountFrontend
 } from '@/app/lib/database-library/database';
-// import { UpdatePasswordFrontend } from "@/app/lib/updatePasswordFrontned";
-// import { DeleteAccountFrontend } from "@/app/lib/deleteAccountFrontend";
+import ConfirmationModal from "./ConfirmationModal";
 import { useRouter } from 'next/navigation';
 
 type UserData = {
@@ -27,6 +26,7 @@ export default function PrivacySettings({ userData }: {userData: UserData | null
   const [newPasswordSuccessMessage, setNewPasswordSuccessMessage] = useState('');
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [deleteSuccessMessage, setDeleteSuccessMessage] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (newPasswordSuccessMessage) {
@@ -67,6 +67,7 @@ export default function PrivacySettings({ userData }: {userData: UserData | null
 
     setLoadingDelete(true);
     const results = await DeleteAccountFrontend(userData.id);
+    setIsModalOpen(false);
     alert(results.message);
     setLoadingDelete(false);
     router.push('/');
@@ -126,11 +127,21 @@ export default function PrivacySettings({ userData }: {userData: UserData | null
       <div className="space-y-4">
         <h3 className="text-xl">Delete your account</h3>
         <button
-          onClick={handleDelete}
+          onClick={() => setIsModalOpen(true)}
           className="mb-6 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-800 disabled:opacity-50"
         >
           Delete your account
         </button>
+        
+        <ConfirmationModal
+          isOpen={isModalOpen}
+          title="Delete Account?"
+          description="Are you sure you want to delete your account? This action is irreversible."
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          onConfirm={handleDelete}
+          onCancel={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   )
