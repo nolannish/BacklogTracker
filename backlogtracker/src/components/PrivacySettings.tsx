@@ -1,8 +1,12 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { UpdatePasswordFrontend } from "@/app/lib/updatePasswordFrontned";
-import { DeleteAccountFrontend } from "@/app/lib/deleteAccountFrontend";
+import {
+  UpdatePasswordFrontend,
+  DeleteAccountFrontend
+} from '@/app/lib/database-library/database';
+// import { UpdatePasswordFrontend } from "@/app/lib/updatePasswordFrontned";
+// import { DeleteAccountFrontend } from "@/app/lib/deleteAccountFrontend";
 import { useRouter } from 'next/navigation';
 
 type UserData = {

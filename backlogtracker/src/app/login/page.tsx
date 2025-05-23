@@ -1,6 +1,7 @@
 'use client';
 
-import LoginUser from "../api/database/login";
+// import LoginUser from "../api/database/login";
+import { LoginFrontend } from "../lib/database-library/database";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import RegisterButton from "@/components/RegisterButton";
@@ -38,17 +39,18 @@ export default function Login() {
 
     if (hasError) return;
 
-    try{
-      const results = await LoginUser(formData);
-      if((!results.success)){
-        setFormError(results.error || "Invalid email or password");
+    try { 
+      const results = await LoginFrontend(email, password);
+
+      if(!results.success) {
+        setFormError(results.message || "Login failed");
         return;
       }
-      
-      router.push("/dashboard");
+
+      router.push('/dashboard');
     } catch (error) {
-      console.error("Login Error: ", error);
-      alert("Failed to log in. Please check your credentials and try again.");
+      setFormError('An unexpected error ooccurred.');
+      console.error(error);
     }
   }
   return (

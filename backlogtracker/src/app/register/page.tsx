@@ -1,10 +1,12 @@
 'use client';
 
-import registerUser from "../api/database/register";
+// import registerUser from "../api/database/register";
+import { RegisterFrontend } from "../lib/database-library/database";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import LoginButton from "@/components/LoginButton";
 import HomeButton from "@/components/HomeButton";
+import { getFirstDynamicReason } from "next/dist/server/app-render/dynamic-rendering";
 
 export default function Register() {
   const router = useRouter();
@@ -13,30 +15,33 @@ export default function Register() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
+    const firstName = formData.get('firstName') as string;
+    const lastName = formData.get('lastName') as string;
+    const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
 
-    if(!formData.get("firstName")){
+    if(!firstName){
       alert("First Name is required");
       return;
     }
 
-    if(!formData.get("lastName")){
+    if(!lastName){
       alert("Last name is required");
       return;
     }
 
-    if(!formData.get("email")){
+    if(!email){
       alert("Email is required");
       return;
     }
 
-    if(!formData.get("password")){
+    if(!password){
       alert("Password is required");
       return;
     }
 
-    if(!formData.get("confirmPassword")){
+    if(!confirmPassword){
       alert("Confirm Password is required");
       return;
     }
@@ -46,13 +51,15 @@ export default function Register() {
       return;
     }
 
-    try {
-      await registerUser(formData);
-      alert("Account created");
-      router.push("/");
+    try { 
+      const results = await RegisterFrontend(firstName, lastName, email, password);
+      if(!results.success) {
+        alert('Error registering user') // add proper validation after function is entirely working
+        return;
+      }
+      router.push('/');
     } catch (error) {
-      console.error("Registration error: ", error);
-      alert("Failed to register user");
+      alert('An unexpected error occurred.');
     }
   };
 

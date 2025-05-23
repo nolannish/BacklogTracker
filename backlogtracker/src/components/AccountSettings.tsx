@@ -1,9 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { UpdateFirstnameFrontend } from '@/app/lib/updateFirstnameFrontend';
-import { UpdateLastnameFrontend } from '@/app/lib/updateLastnameFrontend';
-import { UpdateEmailFrontend } from '@/app/lib/updateEmailFrontend';
+import { 
+  UpdateFirstnameFrontend,
+  UpdateLastnameFrontend,
+  UpdateEmailFrontend,
+} from '@/app/lib/database-library/database';
+// import { UpdateFirstnameFrontend } from '@/app/lib/updateFirstnameFrontend';
+// import { UpdateLastnameFrontend } from '@/app/lib/updateLastnameFrontend';
+// import { UpdateEmailFrontend } from '@/app/lib/updateEmailFrontend';
 
 type UserData = {
   id: string;

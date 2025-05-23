@@ -7,9 +7,9 @@ import { cookies } from 'next/headers';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export default async function LoginUser(formData: FormData){
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+export async function LoginUser(email: string, password: string){
+    // const email = formData.get('email') as string;
+    // const password = formData.get('password') as string;
 
     if(!email){
         return { success: false, error: "Missing email" };
