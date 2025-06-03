@@ -40,4 +40,10 @@ const handler = async (req: NextRequest, ctx: { params: { nextauth: string[] } }
   });
 };
 
-export { handler as GET, handler as POST };
+export const GET = async (req: NextRequest, ctx: { params: { nextauth: string[] } }) => {
+  return handler(req, ctx);
+}
+
+export const POST = async (req: NextRequest, ctx: { params: { nextauth: string[] } }) => {
+  return handler(req, ctx);
+}
