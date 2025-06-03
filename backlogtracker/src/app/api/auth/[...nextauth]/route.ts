@@ -8,6 +8,12 @@ interface SteamProfile {
   personaname: string;
 }
 
+interface RouteContext {
+  params: {
+    nextauth: string[];
+  }
+}
+
 const handler = async (req: NextRequest, ctx: { params: { nextauth: string[] } }) => {
   return NextAuth(req, ctx, {
     providers: [
@@ -40,10 +46,11 @@ const handler = async (req: NextRequest, ctx: { params: { nextauth: string[] } }
   });
 };
 
-export const GET = async (req: NextRequest, ctx: { params: { nextauth: string[] } }) => {
+
+export const GET = async(req: NextRequest, ctx: RouteContext) => {
   return handler(req, ctx);
 }
 
-export const POST = async (req: NextRequest, ctx: { params: { nextauth: string[] } }) => {
+export const POST = async(req: NextRequest, ctx: RouteContext) => {
   return handler(req, ctx);
 }
