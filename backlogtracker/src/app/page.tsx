@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import LoginButton from "@/components/LoginButton";
 import RegisterButton from "@/components/RegisterButton";
+import SteamLogin from "@/components/SteamSignIn";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <h2 className="text-2xl font-semibold text-center mt-4">Track your games, save money, and actually finish what you start.</h2>
         <LoginButton />
         <RegisterButton />
+        <SteamLogin />
       </div>
     </main>
   );
