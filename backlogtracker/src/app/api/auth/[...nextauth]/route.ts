@@ -22,8 +22,8 @@ const handler = async (req: NextRequest, ctx: { params: { nextauth: string[] } }
           return false;
         }
 
-        const steamId = (profile as any).steamid;
-        const username = (profile as any).personaname;
+        const steamId = (profile as SteamProfile).steamid;
+        const username = (profile as SteamProfile).personaname;
 
         const result = await SteamSignIn(steamId, username);
         return result.success;
