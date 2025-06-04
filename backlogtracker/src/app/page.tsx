@@ -4,8 +4,15 @@ import Header from '@/components/Header';
 import LoginButton from "@/components/LoginButton";
 import RegisterButton from "@/components/RegisterButton";
 import SteamLogin from "@/components/SteamSignIn";
+import headerAuthentication from "./lib/auth/headerAuthentication";
+import { redirect } from 'next/navigation';
 
-export default function Home() {
+export default async function Home() {
+  const isLoggedIn = await headerAuthentication();
+
+  if(isLoggedIn) {
+    redirect('/dashboard');
+  }
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900">
       <Header />
