@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import SteamProvider from 'next-auth-steam';
+// import SteamProvider from "next-auth/providers/steam";
 import type { NextRequest } from 'next/server';
 import { SteamSignIn } from '../../database/SteamSignIn';
  
