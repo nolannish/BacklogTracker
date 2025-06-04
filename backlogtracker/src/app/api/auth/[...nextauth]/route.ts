@@ -1,28 +1,28 @@
 import NextAuth from 'next-auth';
-import SteamProvider from 'next-auth-steam';
-// import SteamProvider from "next-auth/providers/steam";
+import Steam from 'next-auth-steam';
 import type { NextRequest } from 'next/server';
 import { SteamSignIn } from '../../database/SteamSignIn';
- 
-interface SteamProfile {
+
+interface SteamProfile { 
   steamid: string;
   personaname: string;
 }
 
-interface RouteContext {
-  params: {
-    nextauth: string[];
+async function auth(
+  req: NextRequest,
+  ctx: {
+    params: {
+      nextauth: string[]
+    }
   }
-}
-
-const handler = async (req: NextRequest, ctx: { params: { nextauth: string[] } }) => {
+) {
   return NextAuth(req, ctx, {
     providers: [
-      SteamProvider(req, {
-        clientSecret: process.env.STEAM_API_KEY!,
-      }),
+      Steam(req, {
+        clientSecret: process.env.STEAM_API_KEY!
+      })
     ],
-    callbacks: {
+     callbacks: {
       async signIn({ profile }) {
         if (!profile || !('steamid' in profile) || !('personaname' in profile)) {
           console.error('Missing or invalid Steam profile');
@@ -44,9 +44,7 @@ const handler = async (req: NextRequest, ctx: { params: { nextauth: string[] } }
       },
     },
     secret: process.env.NEXTAUTH_SECRET,
-  });
-};
+  })
+}
 
-
-export const GET = handler;
-export const POST = handler;
+export { auth as GET, auth as POST };
