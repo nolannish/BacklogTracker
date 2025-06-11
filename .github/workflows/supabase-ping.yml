@@ -23,6 +23,7 @@ jobs:
 
       - name: Run Supabase ping
         run: node backlogtracker/scripts/ping-supabase.mjs
+        working-directory: backlogtracker
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
