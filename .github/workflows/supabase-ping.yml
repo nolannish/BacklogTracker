@@ -10,19 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install @supabase/supabase-js
+        run: npm install
+        working-directory: backlogtracker
 
-      - name: Run Supabase ping
-        run: node backlogtracker/scripts/ping-supabase.mjs
+      - name: Run Supabase Ping Script
+        run: node scripts/ping-supabase.mjs
         working-directory: backlogtracker
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
