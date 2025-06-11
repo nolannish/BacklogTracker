@@ -6,7 +6,7 @@ const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 async function ping() {
-  const { error } = await supabase.from('users').select('uuid').limit(1);
+  const { error } = await supabase.from('users').select('id').limit(1);
   if (error) {
     console.error('❌ Supabase ping failed:', error.message);
     process.exit(1);
