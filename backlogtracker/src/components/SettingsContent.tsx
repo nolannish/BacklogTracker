@@ -5,6 +5,7 @@ import FetchUserData from '@/app/api/database/fetchUserData';
 import SettingsSidebar from './SettingsSidebar';
 import AccountSettings from './AccountSettings';
 import PrivacySettings from './PrivacySettings';
+import { VerifyUserTypeFrontend } from '@/app/lib/database-library/database';
 
 type Section = 'account' | 'privacy'
 
@@ -20,6 +21,7 @@ export default function SettingsContent() {
   const [selectedSection, setSelectedSection] = useState<Section>('account');
   const [user, setUser] = useState<{ email: string, userId: string } | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [userType, setUserType] = useState('none');
 
   useEffect(() => {
     async function fetchUserJWT() {
@@ -60,6 +62,17 @@ export default function SettingsContent() {
 
     getUserData();
   }, [user]);
+
+  // useEffect(() => {
+  //   async function verifyUserType() {
+  //     if (user) {
+  //       const response = await VerifyUserTypeFrontend(user.userId);
+  //       if (response) {
+
+  //       }
+  //     }
+  //   }
+  // })
   return (
     <>
       <SettingsSidebar  selected={selectedSection} onSelect={setSelectedSection} />

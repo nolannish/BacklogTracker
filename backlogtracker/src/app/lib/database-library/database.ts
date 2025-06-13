@@ -144,3 +144,24 @@ export async function RegisterFrontend(firstName: string, lastName: string, emai
     return { success: false, message: 'An error occurred' };
   }
 }
+
+export async function VerifyUserTypeFrontend(userId: string): Promise<{ success: boolean; message: string; userType: string }> {
+  try {
+    // api call to verify user type
+    const response = await fetch('/api/verify-user-type', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (response.ok) {
+      return {success: true, message: 'User Type verified', userType: (await response.json()).userType};
+    } else {
+      return { success: false, message: 'Failed to verify user type', userType: 'error' };
+    }
+  } catch (error) {
+    return { success: false, message: 'An error occurred', userType: 'error' };
+  }
+} 
