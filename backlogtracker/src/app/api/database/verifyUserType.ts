@@ -8,9 +8,9 @@ export async function VerifyUserType(userId: string) {
     const result2 = await sql`SELECT * FROM steamusers WHERE id = ${userId}`;
 
     if (result1.length > 0) {
-      userType = 'users';
+      userType = 'user';
     } else if (result2.length > 0) {
-      userType= 'steamusers';
+      userType= 'steamuser';
     } else {
       userType = 'unknown';
     }

@@ -17,7 +17,7 @@ export async function SteamSignIn(id: string, username: string) {
       const user = existingUsers[0];
 
       const token = jwt.sign(
-        { id: user.steam_id, username: user.username},
+        { id: user.id, username: user.username},
         JWT_SECRET,
         { expiresIn: '168h' } //7 days
       );
@@ -39,9 +39,10 @@ export async function SteamSignIn(id: string, username: string) {
         insert into steamusers (steam_id, username) values (${id}, ${username}) returning *`;
 
       const user = newUser[0];
-
+      
+      console.log(user.id);
       const token = jwt.sign(
-        { id: user.steam_id, username: user.username },
+        { id: user.id, username: user.username },
         JWT_SECRET,
         { expiresIn: '168h' } //7 days
       );

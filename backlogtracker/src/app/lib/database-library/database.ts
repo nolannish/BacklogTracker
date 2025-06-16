@@ -1,3 +1,5 @@
+import { SteamUser } from "../../../../types/types";
+
 export async function UpdateFirstnameFrontend(userId: string, newName: string): Promise<{ success: boolean; message: string }> {
   // api call to update first name
   try {
@@ -165,3 +167,23 @@ export async function VerifyUserTypeFrontend(userId: string): Promise<{ success:
     return { success: false, message: 'An error occurred', userType: 'error' };
   }
 } 
+
+export async function FetchSteamUserDataFrontend(userId: string): Promise<{ success: boolean; message: string; userData: SteamUser | null }> {
+  try {
+    const response = await fetch('/api/fetch-steam-user-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (response.ok) {
+      return { success: true, message: 'steam user data found', userData: await response.json()}
+    } else {
+      return { success: false, message: 'No steam user data found', userData: null };
+    }
+  } catch (error) {
+    return { success: false, message: 'An error occured while fetching steam user data', userData: null };
+  }
+}
