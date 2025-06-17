@@ -109,8 +109,8 @@ useEffect(() => {
       <SettingsSidebar  selected={selectedSection} onSelect={setSelectedSection} />
 
       <div className="flex-1 p-6">
-        {selectedSection === 'account' && <AccountSettings userData={userData}/>}
-        {selectedSection === 'privacy' && <PrivacySettings userData={userData}/>}
+        {selectedSection === 'account' && <AccountSettings userData={userData} steamUserData={steamUserData}/>}
+        {selectedSection === 'privacy' && <PrivacySettings userData={userData} steamUserData={steamUserData}/>}
       </div>
     </>
   )

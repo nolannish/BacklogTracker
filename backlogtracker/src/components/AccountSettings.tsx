@@ -18,7 +18,18 @@ type UserData = {
   password: string;
 }
 
-export default function AccountSettings({ userData }: { userData: UserData | null}) {
+type SteamUserData = {
+  id: string;
+  steamId: string;
+  username: string;
+}
+
+type Props = {
+  userData: UserData | null;
+  steamUserData: SteamUserData | null;
+}
+
+export default function AccountSettings({ userData, steamUserData }: Props) {
   const [user, setUser] = useState<{ email: string, userId: string } | null>(null);
   // const [userData, setUserData] = useState<UserData | null>(null);
   const [firstName, setFirstName] = useState('');

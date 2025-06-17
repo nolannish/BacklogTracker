@@ -16,7 +16,18 @@ type UserData = {
   password: string
 }
 
-export default function PrivacySettings({ userData }: {userData: UserData | null}) {
+type SteamUserData = {
+  id: string,
+  steamId: string;
+  username: string;
+}
+
+type Props = {
+  userData: UserData | null;
+  steamUserData: SteamUserData | null;
+}
+
+export default function PrivacySettings({ userData, steamUserData }: Props) {
   const router = useRouter();
 
   const [newPassword, setNewPassword] = useState('');
