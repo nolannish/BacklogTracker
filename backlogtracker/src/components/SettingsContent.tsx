@@ -91,7 +91,7 @@ useEffect(() => {
       if (response.success && response.userData) {
         const mappedSteamuserData: SteamUserData = {
           id: response.userData.id,
-          steamId: response.userData.steamId,
+          steamId: response.userData.steam_id,
           username: response.userData.username
         };
         setSteamUserData(mappedSteamuserData);
@@ -103,14 +103,15 @@ useEffect(() => {
 
   getSteamUserData();
 }, [user, userType]);
-
+  console.log("user type: ", userType);
+  console.log('steam user data: ', steamUserData);
   return (
     <>
       <SettingsSidebar  selected={selectedSection} onSelect={setSelectedSection} />
 
       <div className="flex-1 p-6">
-        {selectedSection === 'account' && <AccountSettings userData={userData} steamUserData={steamUserData}/>}
-        {selectedSection === 'privacy' && <PrivacySettings userData={userData} steamUserData={steamUserData}/>}
+        {selectedSection === 'account' && <AccountSettings userType={userType} userData={userData} steamUserData={steamUserData}/>}
+        {selectedSection === 'privacy' && <PrivacySettings userType={userType} userData={userData} steamUserData={steamUserData}/>}
       </div>
     </>
   )

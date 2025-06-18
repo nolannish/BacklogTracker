@@ -105,6 +105,27 @@ export async function DeleteAccountFrontend(userId: string): Promise<{ success: 
   }
 }
 
+export async function DeleteSteamAccountFrontend(userId: string): Promise<{ success: boolean; message: string }> {
+  try {
+    // api call to delete steam account
+    const response = await fetch('/api/delete-steam-account', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (response.ok) {
+      return { success: true, message: 'Steam linked account deleted successfully!' };
+    } else {
+      return { success: false, message: 'Failed to delete steam linked account'}
+    }
+  } catch (error) {
+    return { success: false, message: 'An occured while deleting steam linked account' };
+  }
+}
+
 export async function LoginFrontend(email: string, password: string): Promise <{ success: boolean; message: string }> {
   try {
     // api call to login
@@ -179,7 +200,9 @@ export async function FetchSteamUserDataFrontend(userId: string): Promise<{ succ
     });
 
     if (response.ok) {
-      return { success: true, message: 'steam user data found', userData: await response.json()}
+      const data = await response.json();
+      console.log('Steam user data: ', data);
+      return { success: true, message: 'steam user data found', userData: data.userData}
     } else {
       return { success: false, message: 'No steam user data found', userData: null };
     }

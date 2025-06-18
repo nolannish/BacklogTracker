@@ -1,5 +1,5 @@
 export interface SteamUser {
   id: string;
-  steamId: string;
+  steam_id: string;
   username: string;
 }

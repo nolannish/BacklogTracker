@@ -25,11 +25,12 @@ type SteamUserData = {
 }
 
 type Props = {
+  userType: string | null;
   userData: UserData | null;
   steamUserData: SteamUserData | null;
 }
 
-export default function AccountSettings({ userData, steamUserData }: Props) {
+export default function AccountSettings({ userType, userData, steamUserData }: Props) {
   const [user, setUser] = useState<{ email: string, userId: string } | null>(null);
   // const [userData, setUserData] = useState<UserData | null>(null);
   const [firstName, setFirstName] = useState('');
@@ -43,32 +44,38 @@ export default function AccountSettings({ userData, steamUserData }: Props) {
   const [emailSuccessMessage, setEmailSuccessMessage] = useState('');
 
   useEffect(() => {
-    if (firstNameSuccessMessage) {
-      const timeout = setTimeout(() => {
-        setFirstNameSuccessMessage('');
-      }, 3000);
+    if (userData) {
+      if (firstNameSuccessMessage) {
+        const timeout = setTimeout(() => {
+          setFirstNameSuccessMessage('');
+        }, 3000);
 
-      return () => clearTimeout(timeout);
+        return () => clearTimeout(timeout);
+      }
     }
   }, [firstNameSuccessMessage]);
 
   useEffect(() => {
-    if(lastNameSuccessMessage) {
-      const timeout = setTimeout(() => {
-        setLastNameSuccessMessage('');
-      }, 3000);
+    if (userData) {
+      if(lastNameSuccessMessage) {
+        const timeout = setTimeout(() => {
+          setLastNameSuccessMessage('');
+        }, 3000);
 
-      return () => clearTimeout(timeout);
+        return () => clearTimeout(timeout);
+      }
     }
   }, [lastNameSuccessMessage]);
 
   useEffect(() => {
-    if(emailSuccessMessage) {
-      const timeout = setTimeout(() => {
-        setLastNameSuccessMessage('');
-      }, 3000);
+    if (userData) {
+      if(emailSuccessMessage) {
+        const timeout = setTimeout(() => {
+          setLastNameSuccessMessage('');
+        }, 3000);
 
-      return () => clearTimeout(timeout);
+        return () => clearTimeout(timeout);
+      }
     }
   }, [emailSuccessMessage])
 
@@ -99,6 +106,7 @@ export default function AccountSettings({ userData, steamUserData }: Props) {
     setLoadingEmail(false);
   }
 
+  console.log('steamUserData: ', steamUserData);
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Account Settings</h2>
@@ -111,71 +119,90 @@ export default function AccountSettings({ userData, steamUserData }: Props) {
             id="userId"
             className="mt-1 w-full block mb-6 px-3 py-2  rounded-md"
           >
-            {userData ? userData.id : "Loading..."}
+            { userData ? userData.id : steamUserData ? steamUserData.id : 'Loading...' }
           </div>
-          <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
-            First Name
-          </label>
-          <input
-            type="text"
-            id="first_name"
-            name="first_name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="mt-1 w-full block mb-6 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder={userData ? userData.first_name : "First Name"}
-          />
-          <button
-            onClick={handleUpdateFirstname}
-            disabled={loadingFirstName}
-            className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loadingFirstName ? 'Updating...' : 'Update First name'}
-          </button>
-          {firstNameSuccessMessage && <p className="text-sm text-green-600">{firstNameSuccessMessage}</p>}
-          <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
-            Last Name
-          </label>
-          <input
-            type="text"
-            id="last_name"
-            name="last_name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="mt-1 w-full block mb-6 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder={userData ? userData.last_name : "Last Name"}
-          />
-          <button
-            onClick={handleUpdateLastname}
-            disabled={loadingLastName}
-            className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loadingLastName ? 'Updating...' : 'Update Last Name'}
-          </button>
-          {lastNameSuccessMessage && <p className="text-sm text-green-600">{lastNameSuccessMessage}</p>}
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full block mb-6 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder={userData ? userData.email : "Email"}
-          />
-          <button
-            onClick={handleUpdateEmail}
-            disabled={loadingEmail}
-            className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loadingEmail ? 'Updating...' : 'Update email'}
-          </button>
-          {emailSuccessMessage && <p className="text-sm text-green-600">{emailSuccessMessage}</p>}
+          {/* Specific to 'user' type */}
+          {userType === 'user' && userData && (
+            <>
+              {/* First Name */}
+              <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
+                First Name
+              </label>
+              <input
+                type="text"
+                id="first_name"
+                name="first_name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="mt-1 w-full block mb-6 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={userData.first_name}
+              />
+              <button
+                onClick={handleUpdateFirstname}
+                disabled={loadingFirstName}
+                className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              >
+                {loadingFirstName ? 'Updating...' : 'Update First Name'}
+              </button>
+              {firstNameSuccessMessage && <p className="text-sm text-green-600">{firstNameSuccessMessage}</p>}
+
+              {/* Last Name */}
+              <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="mt-1 w-full block mb-6 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={userData.last_name}
+              />
+              <button
+                onClick={handleUpdateLastname}
+                disabled={loadingLastName}
+                className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              >
+                {loadingLastName ? 'Updating...' : 'Update Last Name'}
+              </button>
+              {lastNameSuccessMessage && <p className="text-sm text-green-600">{lastNameSuccessMessage}</p>}
+
+              {/* Email */}
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 w-full block mb-6 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={userData.email}
+              />
+              <button
+                onClick={handleUpdateEmail}
+                disabled={loadingEmail}
+                className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              >
+                {loadingEmail ? 'Updating...' : 'Update Email'}
+              </button>
+              {emailSuccessMessage && <p className="text-sm text-green-600">{emailSuccessMessage}</p>}
+            </>
+          )}
+
+          {/* Specific to 'steamuser' type */}
+          {userType === 'steamuser' && steamUserData && (
+            <>
+              <p className="text-sm text-gray-700">Steam ID: {steamUserData.steamId}</p>
+              <p className="text-sm text-gray-700">Steam Username: {steamUserData.username}</p>
+              <p className="text-sm text-gray-500 mt-2">Steam users cannot update their profile information from this page.</p>
+            </>
+          )}
         </div>
       </div>
       <p>This is account settings section</p>
     </div>
-  )
+  );
 }
