@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import authenticateUser from "../api/auth/authentication";
+import SteamLibrary from "@/components/SteamLibrary";
 
 export default async function Library() {
   await authenticateUser();
@@ -14,6 +15,7 @@ export default async function Library() {
           This is where you can view your games and the progress you have made.
         </p>
       </section>
+      <SteamLibrary />
     </main>
   )
 }

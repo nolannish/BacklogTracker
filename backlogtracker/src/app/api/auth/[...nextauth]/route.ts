@@ -27,33 +27,42 @@ async function handleAuth(req: NextRequest): Promise<Response> {
 
   const ctx = { params: { nextauth } };
 
-  return await NextAuth(req, ctx, {
-    providers: [
-      Steam(req, {
-        clientSecret: process.env.STEAM_API_KEY!,
-      }),
-    ],
-    callbacks: {
-      async signIn({ profile }) {
-        if (!profile || !('steamid' in profile) || !('personaname' in profile)) {
-          console.error('Missing or invalid steam profile');
-          return false;
+  if(!process.env.STEAM_API_KEY) {
+    console.error('STEAM_API_KEY is not set in environment variables');
+  }
+
+  try {
+    return await NextAuth(req, ctx, {
+      providers: [
+        Steam(req, {
+          clientSecret: process.env.STEAM_API_KEY!,
+        }),
+      ],
+      callbacks: {
+        async signIn({ profile }) {
+          if (!profile || !('steamid' in profile) || !('personaname' in profile)) {
+            console.error('Missing or invalid steam profile');
+            return false;
+          }
+
+          const steamId = (profile as SteamProfile).steamid;
+          const username = (profile as SteamProfile).personaname;
+
+          const result = await SteamSignIn(steamId, username);
+          return result.success;
+        },
+
+        async session({ session, token }) {
+          if (session.user) {
+            session.user.id = token.sub;
+          }
+          return session;
         }
-
-        const steamId = (profile as SteamProfile).steamid;
-        const username = (profile as SteamProfile).personaname;
-
-        const result = await SteamSignIn(steamId, username);
-        return result.success;
       },
-
-      async session({ session, token }) {
-        if (session.user) {
-          session.user.id = token.sub;
-        }
-        return session;
-      }
-    },
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+  } catch (error) {
+    console.error('NextAuth error: ', error);
+    return new Response('Internal Server Error', { status: 500 });
+  }
 }
