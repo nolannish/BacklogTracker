@@ -1,8 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+interface SteamGame{
+  appid: number;
+  name: string;
+  playtime_forever: number
+}
 export default function SteamLibrary() {
-  const [games, setGames] = useState<any[]>([]);
+  const [games, setGames] = useState<SteamGame[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
